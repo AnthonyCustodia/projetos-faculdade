@@ -1,0 +1,14 @@
+.container-terreno {
+    max-width: 800px;
+    display: grid;
+    color: white;
+    gap: 10px;
+    background-color: gray;
+}
+
+.comodo {
+    background-color: pink;
+    display: grid;
+    align-items: center;
+    justify-items: center;
+}
