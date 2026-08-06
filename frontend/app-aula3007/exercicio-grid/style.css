@@ -1,0 +1,8 @@
+.container-parede {
+    max-width: 1200px;
+    display: grid;
+    color: white;
+    gap: 10px;
+    background-color: gray;
+    grid-template-columns: 150px 250px 350px 450px;
+}

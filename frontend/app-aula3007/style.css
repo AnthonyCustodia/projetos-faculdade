@@ -1,0 +1,17 @@
+.container-parede {
+    max-width: 500px;
+    margin: 0 auto;
+    border: 1px solid black;
+    background: gray;
+    display: flex;
+    flex-wrap: rap;
+}
+
+.item-quatro {
+    margin: 5px;
+    padding: 5px;
+    background-color: orange;
+    text-align: center;
+    font-size: 16px;
+    color: blueviolet;
+}
