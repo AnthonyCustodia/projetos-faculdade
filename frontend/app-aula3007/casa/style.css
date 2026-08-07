@@ -2,8 +2,10 @@
     max-width: 800px;
     display: grid;
     color: white;
-    gap: 10px;
-    background-color: gray;
+    gap: 20px;
+    grid-template-areas: "Cozinha Cozinha Cozinha Cozinha Cozinha Cozinha Cozinha Cozinha Cozinha Cozinha Cozinha Cozinha"
+                         "Quarto Quarto Quarto Quarto Quarto Quarto Quarto Quarto Quarto Quarto Banheiro Banheiro"
+                         "Quarto Quarto Quarto Quarto Quarto Quarto Quarto Quarto Quarto Quarto Banheiro Banheiro";
 }
 
 .comodo {
@@ -11,4 +13,16 @@
     display: grid;
     align-items: center;
     justify-items: center;
+}
+
+.cozinha {
+    grid-area: Cozinha;
+}
+
+.banheiro {
+    grid-area: Banheiro;
+}
+
+.quarto {
+    grid-area: Quarto;
 }
