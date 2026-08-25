@@ -1,0 +1,35 @@
+@media screen and (min-width: 768px) and (max-width: 992px) {
+    body {
+        background-image: url(../imagem/back-tablet.jpg);
+    }
+
+    #pc {
+        display: none;
+    }
+
+    #ipad {
+        display: block;
+    }
+
+    #phone {
+        display: none;
+    }
+}
+
+@media screen and (min-width: 993px) {
+    body {
+        background-image: url(../imagem/back-pc.jpg);
+    }    
+
+    #pc {
+        display: block;
+    }
+
+    #ipad {
+        display: none;
+    }
+
+    #phone {
+        display: none;
+    }
+}
