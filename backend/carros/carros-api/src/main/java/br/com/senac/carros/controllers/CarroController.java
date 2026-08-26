@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping("/carro")
+@RequestMapping("/carros")
+@CrossOrigin
 public class CarroController {
 
     @Autowired
@@ -22,7 +23,7 @@ public class CarroController {
         return ResponseEntity.ok(carroService.carroList());
     }
 
-    @PostMapping("/adicionar")
+    @PostMapping("/criar")
     public ResponseEntity<Carro> adicionar(@RequestBody CarroDto carro) {
         return ResponseEntity.status(201).body(carroService.adicionar(carro));
     }
