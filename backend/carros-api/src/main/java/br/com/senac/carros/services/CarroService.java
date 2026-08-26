@@ -19,13 +19,13 @@ public class CarroService {
         return carroRepository.findAll();
     }
 
-    public Carro adicionar(CarroDto carroDto) {
-        Carro carro = new Carro();
+    public Carro adicionar(CarroDto carro) {
+        Carro carroPersist = new Carro();
 
-        carro.setMarca(carroDto.getMarca());
-        carro.setModelo(carroDto.getModelo());
+        carroPersist.setMarca(carro.getMarca());
+        carroPersist.setModelo(carro.getModelo());
 
-        return carroRepository.save(carro);
+        return carroRepository.save(carroPersist);
     }
 
     public Carro atualizar(Long id, CarroDto carroDto) {
