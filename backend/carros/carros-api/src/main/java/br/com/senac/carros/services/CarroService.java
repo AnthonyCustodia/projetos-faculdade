@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 public class CarroService {
@@ -28,14 +29,14 @@ public class CarroService {
         return carroRepository.save(carroPersist);
     }
 
-    public Carro atualizar(Long id, CarroDto carroDto) {
-        Carro carro = carroRepository.findById(id).orElseThrow(() ->
+    public Carro atualizar(Long id, CarroDto carro) {
+        Carro carroPersist = carroRepository.findById(id).orElseThrow(() ->
                 new NoSuchElementException("Carro nao encontrado"));
 
-        carro.setMarca(carroDto.getMarca());
-        carro.setModelo(carroDto.getModelo());
+        carroPersist.setMarca(carro.getMarca());
+        carroPersist.setModelo(carro.getModelo());
 
-        return carroRepository.save(carro);
+        return carroRepository.save(carroPersist);
     }
 
     public void deletar(Long id) {
@@ -43,5 +44,14 @@ public class CarroService {
             throw new NoSuchElementException("Carro nao encontrado com id: " + id);
         }
         carroRepository.deleteById(id);
+    }
+
+    public Carro listarPorId(Long id) {
+        Optional<Carro> carrosResult = carroRepository.findById(id);
+        if (carrosResult.isPresent()) {
+            return carrosResult.get();
+        }
+
+        throw new RuntimeException("Carro nao encontrado");
     }
 }

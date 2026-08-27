@@ -35,7 +35,28 @@ public class CarroController {
 
     @DeleteMapping("/deletar/{id}")
     public ResponseEntity<Void> deletar(@PathVariable Long id) {
-        carroService.deletar(id);
-        return ResponseEntity.noContent().build();
+        try {
+            carroService.deletar(id);
+            return ResponseEntity.noContent().build();
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body(null);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().body(null);
+        }
+    }
+
+    @GetMapping("/listar/{id}")
+    public ResponseEntity<Carro> listarPorId(@PathVariable Long id) {
+        try {
+            return ResponseEntity.ok(carroService.listarPorId(id));
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body(null);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().body(null);
+        }
     }
 }
