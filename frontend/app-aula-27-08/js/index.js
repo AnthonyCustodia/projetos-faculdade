@@ -10,5 +10,6 @@ console.log(cep);
 const id = 2024;
 console.log(id);
 
+//É feito para nao funcionar
 id = 2025;
 console.log(id);
