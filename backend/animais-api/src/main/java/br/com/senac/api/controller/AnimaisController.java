@@ -20,12 +20,22 @@ public class AnimaisController {
 
     @PostMapping("/criar")
     public ResponseEntity<Animais> criar(@RequestBody AnimaisDto animais) {
-        return ResponseEntity.ok(animaisService.criar(animais));
+        try {
+            return ResponseEntity.ok(animaisService.criar(animais));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().body(null);
+        }
     }
 
     @PutMapping("/atualizar/{id}")
     public ResponseEntity<Animais> atualizar(@PathVariable Long id, @RequestBody AnimaisDto animais) {
-        return ResponseEntity.ok(animaisService.atualizar(id, animais));
+        try {
+            return ResponseEntity.ok(animaisService.atualizar(id, animais));
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body(null);
+        }
     }
 
     @GetMapping("/listar")
