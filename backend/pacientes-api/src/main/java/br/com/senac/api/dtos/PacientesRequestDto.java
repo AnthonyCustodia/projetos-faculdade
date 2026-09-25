@@ -1,12 +1,12 @@
-package br.com.senac.api.dtos;
+package br.com.senac.paciente_api.dtos;
 
 import java.time.LocalDate;
 
-public class PacientesDto {
-
+public class PacientesRequestDto {
     private String nome;
     private int idade;
     private LocalDate dataEntrada;
+    private LocalDate dataNacimento;
 
     public String getNome() {
         return nome;
@@ -30,5 +30,13 @@ public class PacientesDto {
 
     public void setDataEntrada(LocalDate dataEntrada) {
         this.dataEntrada = dataEntrada;
+    }
+
+    public LocalDate getDataNacimento() {
+        return dataNacimento;
+    }
+
+    public void setDataNacimento(LocalDate dataNacimento) {
+        this.dataNacimento = dataNacimento;
     }
 }
