@@ -1,10 +1,10 @@
-package br.com.senac.api;
+package br.com.senac.paciente_api;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class PacientesApiApplicationTests {
+class PacienteApiApplicationTests {
 
 	@Test
 	void contextLoads() {

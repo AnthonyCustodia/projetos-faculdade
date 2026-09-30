@@ -1,6 +1,7 @@
-package br.com.senac.api.entities;
+package br.com.senac.paciente_api.entidades;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 import java.time.LocalDate;
 
@@ -10,10 +11,13 @@ public class Pacientes {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(nullable = false)
     private String nome;
+
     @Column(nullable = false)
     private int idade;
+
     @Column
     private LocalDate dataEntrada;
 

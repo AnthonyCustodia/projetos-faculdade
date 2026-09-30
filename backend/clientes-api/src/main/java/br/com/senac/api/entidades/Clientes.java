@@ -3,6 +3,7 @@ package br.com.senac.api.entidades;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 public class Clientes {
@@ -22,6 +23,9 @@ public class Clientes {
 
     @Column
     private LocalDate dataNascimeto;
+
+    @OneToMany(mappedBy = "cliente")
+    private List<Enderecos> enderecos;
 
     public Long getId() {
         return id;
@@ -61,5 +65,13 @@ public class Clientes {
 
     public void setDataNascimeto(LocalDate dataNascimeto) {
         this.dataNascimeto = dataNascimeto;
+    }
+
+    public List<Enderecos> getEnderecos() {
+        return enderecos;
+    }
+
+    public void setEnderecos(List<Enderecos> enderecos) {
+        this.enderecos = enderecos;
     }
 }

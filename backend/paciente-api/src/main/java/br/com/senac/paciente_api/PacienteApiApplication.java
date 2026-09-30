@@ -1,13 +1,13 @@
-package br.com.senac.api;
+package br.com.senac.paciente_api;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class PacientesApiApplication {
+public class PacienteApiApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(PacientesApiApplication.class, args);
+		SpringApplication.run(PacienteApiApplication.class, args);
 	}
 
 }
