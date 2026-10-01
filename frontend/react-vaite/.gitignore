@@ -1,4 +1,17 @@
-# Logs
+# Este arquivo vale para toda a pasta react-vaite.
+# Os padrões abaixo são os do template do Vite, mais alguns casos que
+# faltavam (segredos e caches de build).
+
+# --- Dependências e build ---
+node_modules
+dist
+dist-ssr
+*.local
+coverage/
+.vite/
+*.tsbuildinfo
+
+# --- Logs ---
 logs
 *.log
 npm-debug.log*
@@ -7,18 +20,24 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
-*.local
+# --- Segredos ---
+# Variáveis de ambiente nunca entram no repositório: é o jeito mais
+# comum de vazar chave de API. Se um dia precisar de um exemplo,
+# crie um .env.example e versione só ele.
+.env
+.env.local
+.env.*.local
 
-# Editor directories and files
+# --- Editor ---
 .vscode/*
 !.vscode/extensions.json
 .idea
-.DS_Store
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
+
+# --- Sistema operacional ---
+.DS_Store
+Thumbs.db
