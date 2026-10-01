@@ -1,5 +1,6 @@
 package br.com.senac.api.entidades;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -25,6 +26,7 @@ public class Clientes {
     private LocalDate dataNascimeto;
 
     @OneToMany(mappedBy = "cliente")
+    @JsonManagedReference
     private List<Enderecos> enderecos;
 
     public Long getId() {

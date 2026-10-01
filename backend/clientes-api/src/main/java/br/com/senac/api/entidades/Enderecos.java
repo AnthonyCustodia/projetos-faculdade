@@ -1,5 +1,6 @@
 package br.com.senac.api.entidades;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 @Entity
@@ -29,6 +30,7 @@ public class Enderecos {
 
     @ManyToOne
     @JoinColumn(name = "cliente_id", nullable = false)
+    @JsonBackReference
     private Clientes cliente;
 
     public Long getId() {
