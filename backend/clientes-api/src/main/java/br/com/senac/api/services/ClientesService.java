@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ClientesService {
@@ -18,15 +19,49 @@ public class ClientesService {
         return clientesRepositorio.findAll();
     }
 
-
     public Clientes criar(ClientesRequestDto cliente) {
-        Clientes clienteSaida = new Clientes();
-        clienteSaida.setNome(cliente.getNome());
-        clienteSaida.setDocumento(cliente.getDocumento());
-        clienteSaida.setEmail(cliente.getEmail());
-        clienteSaida.setDataNascimeto(cliente.getDataNascimento());
+        Clientes clienteSaida = this.clientesRequestDtoToClientes(cliente);
 
         return clientesRepositorio.save(clienteSaida);
     }
 
+    public Clientes atualizar(Long id, ClientesRequestDto cliente) {
+        if(clientesRepositorio.existsById(id)) {
+            Clientes clienteSaida = this.clientesRequestDtoToClientes(cliente);
+            clienteSaida.setId(id);
+
+            return clientesRepositorio.save(clienteSaida);
+        }
+
+        throw new RuntimeException("Cliente não encontrado!");
+    }
+
+    public void deletar(Long id) {
+        if(clientesRepositorio.existsById(id)) {
+            clientesRepositorio.deleteById(id);
+            return;
+        }
+
+        throw new RuntimeException("Cliente não encontrado!");
+    }
+
+    private Clientes clientesRequestDtoToClientes(ClientesRequestDto entrada) {
+        Clientes saida = new Clientes();
+
+        saida.setNome(entrada.getNome());
+        saida.setDocumento(entrada.getDocumento());
+        saida.setEmail(entrada.getEmail());
+        saida.setDataNascimento(entrada.getDataNascimento());
+
+        return saida;
+    }
+
+    public Clientes listarPorId(Long id) {
+        Optional<Clientes> clienteRetorno = clientesRepositorio.findById(id);
+        if (clienteRetorno.isPresent()) {
+            return clienteRetorno.get();
+        }
+
+        throw new RuntimeException("Cliente não encontrado");
+    }
 }

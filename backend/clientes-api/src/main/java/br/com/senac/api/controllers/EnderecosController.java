@@ -1,8 +1,8 @@
 package br.com.senac.api.controllers;
 
-import br.com.senac.api.dtos.ClientesRequestDto;
-import br.com.senac.api.entidades.Clientes;
-import br.com.senac.api.services.ClientesService;
+import br.com.senac.api.dtos.EnderecosRequestDto;
+import br.com.senac.api.entidades.Enderecos;
+import br.com.senac.api.services.EndercosService;
 import br.com.senac.api.utils.RequestUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,23 +12,23 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping("/clientes")
-public class ClientesController {
+@RequestMapping("/enderecos")
+public class EnderecosController {
 
     @Autowired
-    private ClientesService clientesService;
+    private EndercosService endercosService;
 
     @GetMapping("/listar")
-    public ResponseEntity<List<Clientes>> listarTodos() {
-        return ResponseEntity.ok(clientesService.listar());
+    public ResponseEntity<List<Enderecos>> listarTodos() {
+        return ResponseEntity.ok(endercosService.listarTodos());
     }
 
     @PostMapping("/criar")
-    public ResponseEntity<?> criar(@RequestBody ClientesRequestDto cliente) {
+    public ResponseEntity<?> criar(@RequestBody EnderecosRequestDto endereco) {
         try {
             return ResponseEntity
                     .status(201)
-                    .body(clientesService.criar(cliente));
+                    .body(endercosService.criar(endereco));
         } catch (RuntimeException e) {
             return ResponseEntity
                     .badRequest()
@@ -43,11 +43,11 @@ public class ClientesController {
     @PutMapping("/atualizar/{id}")
     public ResponseEntity<?> atualizar(
             @PathVariable Long id,
-            @RequestBody ClientesRequestDto cliente
+            @RequestBody EnderecosRequestDto endereco
     ) {
         try {
-            return ResponseEntity.ok(clientesService.atualizar(
-                    id,cliente
+            return ResponseEntity.ok(endercosService.atualizar(
+                    id,endereco
             ));
         } catch (RuntimeException e) {
             return ResponseEntity
@@ -63,7 +63,7 @@ public class ClientesController {
     @DeleteMapping("/deletar/{id}")
     public ResponseEntity<?> deletar(@PathVariable Long id) {
         try {
-            clientesService.deletar(id);
+            endercosService.deletar(id);
             return ResponseEntity.ok(null);
         } catch (RuntimeException e) {
             return ResponseEntity

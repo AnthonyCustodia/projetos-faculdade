@@ -1,45 +1,19 @@
-package br.com.senac.api.entidades;
+package br.com.senac.api.dtos;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import jakarta.persistence.*;
-
-@Entity
-public class Enderecos {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(nullable = false)
+public class EnderecosRequestDto {
     private int cep;
 
-    @Column(nullable = false)
     private String rua;
 
-    @Column(nullable = false, length = 100)
     private String bairro;
 
-    @Column(nullable = false, length = 100)
     private String cidade;
 
-    @Column(nullable = false, length = 2)
     private String estado;
 
-    @Column
     private String complemento;
 
-    @ManyToOne
-    @JoinColumn(name = "cliente_id", nullable = false)
-    @JsonBackReference
-    private Clientes cliente;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+    private Long clienteId;
 
     public int getCep() {
         return cep;
@@ -89,11 +63,11 @@ public class Enderecos {
         this.complemento = complemento;
     }
 
-    public Clientes getCliente() {
-        return cliente;
+    public Long getClienteId() {
+        return clienteId;
     }
 
-    public void setCliente(Clientes cliente) {
-        this.cliente = cliente;
+    public void setClienteId(Long clienteId) {
+        this.clienteId = clienteId;
     }
 }

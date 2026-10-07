@@ -3,7 +3,6 @@ package br.com.senac.api.dtos;
 import java.time.LocalDate;
 
 public class ClientesRequestDto {
-
     private String nome;
     private String documento;
     private LocalDate dataNascimento;

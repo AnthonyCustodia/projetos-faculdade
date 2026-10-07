@@ -23,7 +23,7 @@ public class Clientes {
     private String documento;
 
     @Column
-    private LocalDate dataNascimeto;
+    private LocalDate dataNascimento;
 
     @OneToMany(mappedBy = "cliente")
     @JsonManagedReference
@@ -61,12 +61,12 @@ public class Clientes {
         this.documento = documento;
     }
 
-    public LocalDate getDataNascimeto() {
-        return dataNascimeto;
+    public LocalDate getDataNascimento() {
+        return dataNascimento;
     }
 
-    public void setDataNascimeto(LocalDate dataNascimeto) {
-        this.dataNascimeto = dataNascimeto;
+    public void setDataNascimento(LocalDate dataNascimento) {
+        this.dataNascimento = dataNascimento;
     }
 
     public List<Enderecos> getEnderecos() {
