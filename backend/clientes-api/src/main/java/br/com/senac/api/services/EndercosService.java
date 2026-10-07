@@ -29,8 +29,11 @@ public class EndercosService {
 
     public  Enderecos atualizar(Long id, EnderecosRequestDto endereco) {
         if(enderecosRepositorio.existsById(id)) {
+            Clientes cliente = clientesService.listarPorId(endereco.getClienteId());
+
             Enderecos enderecoPersist = this.enderecosRequestDtoToEnderecos(endereco);
             enderecoPersist.setId(id);
+            enderecoPersist.setCliente(cliente);
 
             return enderecosRepositorio.save(enderecoPersist);
         }
