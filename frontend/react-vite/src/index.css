@@ -1,0 +1,36 @@
+body {
+  font-family: system-ui, Arial, sans-serif;
+  margin: 0;
+  padding: 24px;
+  line-height: 1.5;
+}
+
+section {
+  border-bottom: 1px solid #ddd;
+  padding: 16px 0;
+}
+
+input {
+  margin-right: 8px;
+  padding: 6px 8px;
+}
+
+button {
+  margin-right: 8px;
+  cursor: pointer;
+}
+
+/* Estilo global (Aula 08 - 2ª forma de estilização) */
+.botao-azul {
+  background-color: blue;
+  color: #ffffff;
+  padding: 15px 32px;
+  border-radius: 25px;
+  border: none;
+  cursor: pointer;
+}
+
+/* efeito ao passar o mouse */
+.botao-azul:hover {
+  background-color: darkblue;
+}
