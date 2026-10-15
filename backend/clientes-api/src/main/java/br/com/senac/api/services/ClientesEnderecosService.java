@@ -5,7 +5,9 @@ import br.com.senac.api.dtos.ClientesRequestDto;
 import br.com.senac.api.entidades.Clientes;
 import br.com.senac.api.entidades.Enderecos;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class ClientesEnderecosService {
 
     @Autowired
@@ -20,7 +22,10 @@ public class ClientesEnderecosService {
         if (cliente.getEnderecos() != null && !cliente.getEnderecos().isEmpty()) {
             for (ClienteEnderecoRequestDto end : cliente.getEnderecos()) {
 
-                this.endercosService.criar(end);
+                end.setClienteId(clienteRetorno.getId());
+                Enderecos retorno = this.endercosService.criar(end);
+
+                clienteRetorno.getEnderecos().add(retorno);
             }
         }
         return clienteRetorno;
