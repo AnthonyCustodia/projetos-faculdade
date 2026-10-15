@@ -20,8 +20,8 @@ public class CidadesController {
         return ResponseEntity.ok(cidadesService.listarTodos());
     }
 
-    @PutMapping("/criar")
-    public ResponseEntity<?> criar(CidadesRequestDto cidade) {
+    @PostMapping("/criar")
+    public ResponseEntity<?> criar(@RequestBody CidadesRequestDto cidade) {
         try {
             return ResponseEntity.status(201).body(cidadesService.criar(cidade));
         } catch (RuntimeException e) {
@@ -31,7 +31,7 @@ public class CidadesController {
         }
     }
 
-    @PostMapping("/atualizar/{id}")
+    @PutMapping("/atualizar/{id}")
     public ResponseEntity<?> atualizar(@PathVariable Long id, @RequestBody CidadesRequestDto cidade) {
         try {
             return ResponseEntity.ok(cidadesService.atualizar(id, cidade));
