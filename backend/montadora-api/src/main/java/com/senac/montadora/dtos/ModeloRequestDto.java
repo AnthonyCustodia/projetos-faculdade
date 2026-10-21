@@ -1,13 +1,9 @@
 package com.senac.montadora.dtos;
 
-import com.senac.montadora.entities.Montadora;
-
-import java.util.List;
-
 public class ModeloRequestDto {
 
     private String nome;
-    private List<MontadoraRequestDto> montadoras;
+    private Long montadoraId;
 
     public String getNome() {
         return nome;
@@ -17,11 +13,11 @@ public class ModeloRequestDto {
         this.nome = nome;
     }
 
-    public List<MontadoraRequestDto> getMontadoras() {
-        return montadoras;
+    public Long getMontadoraId() {
+        return montadoraId;
     }
 
-    public void setMontadoras(List<MontadoraRequestDto> montadoras) {
-        this.montadoras = montadoras;
+    public void setMontadoraId(Long montadoraId) {
+        this.montadoraId = montadoraId;
     }
 }

@@ -2,7 +2,9 @@ package com.senac.montadora.services;
 
 import com.senac.montadora.dtos.ModeloRequestDto;
 import com.senac.montadora.entities.Modelo;
+import com.senac.montadora.entities.Montadora;
 import com.senac.montadora.repositories.ModeloRepository;
+import com.senac.montadora.repositories.MontadoraRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +15,9 @@ public class ModeloService {
 
     @Autowired
     private ModeloRepository modeloRepository;
+
+    @Autowired
+    private MontadoraRepository montadoraRepository;
 
     public List<Modelo> listarModelos() {
         return modeloRepository.findAll();
@@ -42,9 +47,13 @@ public class ModeloService {
     }
 
     private Modelo dtoToModelo(ModeloRequestDto entry) {
+        Montadora montadora = montadoraRepository.findById(entry.getMontadoraId())
+            .orElseThrow(() -> new RuntimeException("Montadora nao encontrada!"));
+
         Modelo exit = new Modelo();
 
         exit.setNome(entry.getNome());
+        exit.setMontadora(montadora);
 
         return exit;
     }

@@ -1,6 +1,6 @@
 package com.senac.montadora.entities;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -16,7 +16,7 @@ public class Modelo {
     private String nome;
     @ManyToOne
     @JoinColumn(name = "montadora_id", nullable = false)
-    @JsonManagedReference
+    @JsonBackReference
     private Montadora montadora;
 
     public Long getId() {

@@ -37,8 +37,9 @@ public class MontadoraService {
     public void deletar(Long id) {
         if (montadoraRepository.existsById(id)) {
             montadoraRepository.deleteById(id);
+        } else {
+            throw new RuntimeException("Montadora nao encontrada!");
         }
-        throw new RuntimeException("Montadora nao encontrada!");
     }
 
     private Montadora dtoToMontadora(MontadoraRequestDto entry) {
