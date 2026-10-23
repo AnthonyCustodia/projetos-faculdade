@@ -15,7 +15,7 @@ function App() {
       <ComponenteFilho></ComponenteFilho>
       <ValorContexto></ValorContexto>
     </MeuContextoProvider>
-    <Contador></Contador>
+    <Contador></Contador>\
     </>
   )
 }
