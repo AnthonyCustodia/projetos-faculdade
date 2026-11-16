@@ -73,7 +73,7 @@ class EstoqueApiApplicationTests {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"email\":\"ninguem@senac.br\",\"senha\":\"errada\"}"))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.mensagem").value("E-mail ou senha invalidos!"));
+                .andExpect(jsonPath("$.mensagem").value("E-mail ou senha inválidos!"));
     }
 
     @Test
@@ -146,7 +146,7 @@ class EstoqueApiApplicationTests {
         // Saida maior que o estoque e recusada e nao altera nada
         movimentar(id, "SAIDA", 50)
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.mensagem").value("Estoque insuficiente! Disponivel: 11"));
+                .andExpect(jsonPath("$.mensagem").value("Estoque insuficiente! Disponível: 11"));
         estoqueDeveSer(id, 11);
 
         // Quantidade e tipo invalidos

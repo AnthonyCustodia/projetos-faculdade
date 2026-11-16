@@ -26,6 +26,6 @@ public class TratadorDeErros {
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<Map<String, String>> jsonInvalido(HttpMessageNotReadableException e) {
-        return ResponseEntity.badRequest().body(ResponseUtil.parserMensagem("Corpo da requisicao invalido!"));
+        return ResponseEntity.badRequest().body(ResponseUtil.parserMensagem("Corpo da requisição inválido!"));
     }
 }

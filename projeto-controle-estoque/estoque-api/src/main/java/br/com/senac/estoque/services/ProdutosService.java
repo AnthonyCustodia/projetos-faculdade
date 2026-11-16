@@ -22,14 +22,14 @@ public class ProdutosService {
 
     public Produtos listarPorId(Long id) {
         return produtosRepositorio.findById(id)
-                .orElseThrow(() -> new NaoEncontradoException("Produto nao encontrado!"));
+                .orElseThrow(() -> new NaoEncontradoException("Produto não encontrado!"));
     }
 
     public Produtos criar(ProdutosRequestDto entrada) {
         validar(entrada);
         String codigoBarras = entrada.getCodigoBarras().trim();
         if (produtosRepositorio.existsByCodigoBarras(codigoBarras)) {
-            throw new RegraNegocioException("Ja existe um produto com este codigo de barras!");
+            throw new RegraNegocioException("Já existe um produto com este código de barras!");
         }
 
         Produtos produto = new Produtos();
@@ -45,7 +45,7 @@ public class ProdutosService {
         validar(entrada);
         Produtos produto = listarPorId(id);
         if (produtosRepositorio.existsByCodigoBarrasAndIdNot(entrada.getCodigoBarras().trim(), id)) {
-            throw new RegraNegocioException("Ja existe outro produto com este codigo de barras!");
+            throw new RegraNegocioException("Já existe outro produto com este código de barras!");
         }
 
         preencher(produto, entrada);
@@ -67,10 +67,10 @@ public class ProdutosService {
 
     private void validar(ProdutosRequestDto entrada) {
         if (entrada.getCodigoBarras() == null || entrada.getCodigoBarras().isBlank()) {
-            throw new RegraNegocioException("O codigo de barras e obrigatorio!");
+            throw new RegraNegocioException("O código de barras é obrigatório!");
         }
         if (entrada.getNome() == null || entrada.getNome().isBlank()) {
-            throw new RegraNegocioException("O nome do produto e obrigatorio!");
+            throw new RegraNegocioException("O nome do produto é obrigatório!");
         }
     }
 }

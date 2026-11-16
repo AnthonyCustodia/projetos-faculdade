@@ -25,11 +25,11 @@ public class UsuariosService {
 
     public UsuariosResponseDto criar(UsuariosRequestDto entrada) {
         if (vazio(entrada.getNome()) || vazio(entrada.getEmail()) || vazio(entrada.getSenha())) {
-            throw new RegraNegocioException("Nome, e-mail e senha sao obrigatorios!");
+            throw new RegraNegocioException("Nome, e-mail e senha são obrigatórios!");
         }
         String email = entrada.getEmail().trim().toLowerCase();
         if (usuariosRepositorio.existsByEmail(email)) {
-            throw new RegraNegocioException("Ja existe um usuario com este e-mail!");
+            throw new RegraNegocioException("Já existe um usuário com este e-mail!");
         }
 
         Usuarios usuario = new Usuarios();
@@ -49,7 +49,7 @@ public class UsuariosService {
         Usuarios usuario = usuariosRepositorio
                 .findByEmail(entrada.getEmail().trim().toLowerCase())
                 .filter(u -> passwordEncoder.matches(entrada.getSenha(), u.getSenha()))
-                .orElseThrow(() -> new RegraNegocioException("E-mail ou senha invalidos!"));
+                .orElseThrow(() -> new RegraNegocioException("E-mail ou senha inválidos!"));
 
         return new TokenResponseDto(jwtService.gerarToken(usuario), usuario.getNome(), usuario.getEmail());
     }

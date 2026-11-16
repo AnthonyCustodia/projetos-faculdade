@@ -50,9 +50,9 @@ public class MovimentacoesService {
         }
 
         Produtos produto = produtosRepositorio.buscarPorIdParaAtualizarEstoque(produtoId)
-                .orElseThrow(() -> new NaoEncontradoException("Produto nao encontrado!"));
+                .orElseThrow(() -> new NaoEncontradoException("Produto não encontrado!"));
         if (!produto.getAtivo()) {
-            throw new RegraNegocioException("Produto desativado nao pode ser movimentado!");
+            throw new RegraNegocioException("Produto desativado não pode ser movimentado!");
         }
 
         if (tipo == TipoMovimentacao.ENTRADA) {
@@ -62,7 +62,7 @@ public class MovimentacoesService {
             // Saida: subtrai a quantidade do estoque que ja existe
             if (quantidade > produto.getEstoque()) {
                 throw new RegraNegocioException(
-                        "Estoque insuficiente! Disponivel: " + produto.getEstoque());
+                        "Estoque insuficiente! Disponível: " + produto.getEstoque());
             }
             produto.setEstoque(produto.getEstoque() - quantidade);
         }
@@ -80,12 +80,12 @@ public class MovimentacoesService {
 
     private TipoMovimentacao converterTipo(String tipo) {
         if (tipo == null || tipo.isBlank()) {
-            throw new RegraNegocioException("Informe o tipo da movimentacao: ENTRADA ou SAIDA!");
+            throw new RegraNegocioException("Informe o tipo da movimentação: ENTRADA ou SAIDA!");
         }
         try {
             return TipoMovimentacao.valueOf(tipo.trim().toUpperCase());
         } catch (IllegalArgumentException e) {
-            throw new RegraNegocioException("Tipo de movimentacao invalido! Use ENTRADA ou SAIDA.");
+            throw new RegraNegocioException("Tipo de movimentação inválido! Use ENTRADA ou SAIDA.");
         }
     }
 }
