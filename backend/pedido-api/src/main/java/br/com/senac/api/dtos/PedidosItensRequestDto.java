@@ -2,7 +2,6 @@ package br.com.senac.api.dtos;
 
 public class PedidosItensRequestDto {
     private Double quantidade;
-
     private Long pedidoId;
 
     public Double getQuantidade() {

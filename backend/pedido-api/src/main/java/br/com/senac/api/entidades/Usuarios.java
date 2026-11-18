@@ -2,6 +2,9 @@ package br.com.senac.api.entidades;
 
 import jakarta.persistence.*;
 
+/**
+ * Entidade JPA da tabela "usuarios": as pessoas que podem fazer login na API.
+ */
 @Entity
 public class Usuarios {
 
@@ -9,12 +12,17 @@ public class Usuarios {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    // length = 100: a coluna no banco vira varchar(100) (o padrão do JPA é 255).
+    @Column(nullable = false, length = 100)
     private String nome;
 
+    // unique = true: não pode haver dois usuários com o mesmo email.
+    // O email é o "login" e também o "subject" (sub) gravado no JWT.
     @Column(nullable = false, unique = true)
     private String email;
 
+    // Guarda o HASH BCrypt da senha, nunca a senha em texto puro.
+    // Obs.: sem @JsonIgnore, esse hash aparece no JSON quando a entidade é devolvida (ex.: no cadastro).
     @Column(nullable = false)
     private String senha;
 
@@ -49,5 +57,4 @@ public class Usuarios {
     public void setSenha(String senha) {
         this.senha = senha;
     }
-
 }

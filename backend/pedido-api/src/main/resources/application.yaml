@@ -1,15 +1,16 @@
-server:
-  error:
-    include-message: always
-    include-stacktrace: never
 spring:
   jpa:
     database: POSTGRESQL
     hibernate:
+      # update: o Hibernate cria/altera as tabelas conforme as entidades (bom para estudo;
+      # em produção usa-se ferramenta de migração, como Flyway/Liquibase).
       ddl-auto: update
+    # Mostra no console os SQL executados.
     show-sql: true
   datasource:
     url: jdbc:postgresql://localhost:5432/pedidos-db
+    # Obs.: credenciais fixas no arquivo. Em projetos reais use variáveis de ambiente,
+    # ex.: password: ${DB_PASSWORD}. O segredo do JWT poderia ficar aqui também (ver JwtService).
     password: Sen@c2023
     username: postgres
     driverClassName: org.postgresql.Driver

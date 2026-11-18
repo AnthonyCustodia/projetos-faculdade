@@ -1,4 +1,4 @@
-package br.com.senac.api.repositorios;
+package br.com.senac.api.respositorios;
 
 import br.com.senac.api.entidades.PedidosItens;
 import org.springframework.data.jpa.repository.JpaRepository;
