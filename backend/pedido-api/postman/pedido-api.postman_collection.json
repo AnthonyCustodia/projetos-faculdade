@@ -1,0 +1,440 @@
+{
+  "info": {
+    "name": "pedido-api",
+    "description": "Testes da pedido-api. Rode na ordem (Run collection). O login salva o token automaticamente e as outras requisicoes usam Bearer {{token}}.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8080" },
+    { "key": "email", "value": "" },
+    { "key": "senha", "value": "teste123" },
+    { "key": "token", "value": "" },
+    { "key": "pedidoId", "value": "" },
+    { "key": "pedidoSemItensId", "value": "" },
+    { "key": "itemId", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "1 - Usuarios",
+      "item": [
+        {
+          "name": "Cadastrar usuario",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": { "type": "text/javascript", "exec": [
+                "pm.collectionVariables.set('email', 'usuario' + Date.now() + '@teste.com');"
+              ] }
+            },
+            {
+              "listen": "test",
+              "script": { "type": "text/javascript", "exec": [
+                "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                "const body = pm.response.json();",
+                "pm.test('Retorna id', () => pm.expect(body.id).to.be.a('number'));",
+                "pm.test('Email igual ao enviado', () => pm.expect(body.email).to.eql(pm.collectionVariables.get('email')));",
+                "pm.test('Senha criptografada', () => pm.expect(body.senha).to.not.eql(pm.collectionVariables.get('senha')));"
+              ] }
+            }
+          ],
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"nome\": \"Usuario Teste\",\n  \"email\": \"{{email}}\",\n  \"senha\": \"{{senha}}\"\n}" },
+            "url": "{{baseUrl}}/usuarios/cadastro"
+          }
+        },
+        {
+          "name": "Cadastrar usuario com email repetido (erro)",
+          "event": [{
+            "listen": "test",
+            "script": { "type": "text/javascript", "exec": [
+              "pm.test('Status 400', () => pm.response.to.have.status(400));",
+              "pm.test('Retorna mensagem', () => pm.expect(pm.response.json()).to.have.property('mensagem'));"
+            ] }
+          }],
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"nome\": \"Usuario Teste\",\n  \"email\": \"{{email}}\",\n  \"senha\": \"{{senha}}\"\n}" },
+            "url": "{{baseUrl}}/usuarios/cadastro"
+          }
+        },
+        {
+          "name": "Login com senha errada (erro)",
+          "event": [{
+            "listen": "test",
+            "script": { "type": "text/javascript", "exec": [
+              "pm.test('Status 400', () => pm.response.to.have.status(400));",
+              "pm.test('Mensagem de senha invalida', () => pm.expect(pm.response.json().mensagem).to.include('Senha'));"
+            ] }
+          }],
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"email\": \"{{email}}\",\n  \"senha\": \"senhaErrada\"\n}" },
+            "url": "{{baseUrl}}/usuarios/login"
+          }
+        },
+        {
+          "name": "Login com usuario inexistente (erro)",
+          "event": [{
+            "listen": "test",
+            "script": { "type": "text/javascript", "exec": [
+              "pm.test('Status 400', () => pm.response.to.have.status(400));",
+              "pm.test('Mensagem de usuario nao encontrado', () => pm.expect(pm.response.json().mensagem).to.include('Usuario'));"
+            ] }
+          }],
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"email\": \"naoexiste@teste.com\",\n  \"senha\": \"{{senha}}\"\n}" },
+            "url": "{{baseUrl}}/usuarios/login"
+          }
+        },
+        {
+          "name": "Login",
+          "event": [{
+            "listen": "test",
+            "script": { "type": "text/javascript", "exec": [
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "const body = pm.response.json();",
+              "pm.test('Retorna token', () => pm.expect(body.token).to.be.a('string').and.not.empty);",
+              "pm.collectionVariables.set('token', body.token);"
+            ] }
+          }],
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"email\": \"{{email}}\",\n  \"senha\": \"{{senha}}\"\n}" },
+            "url": "{{baseUrl}}/usuarios/login"
+          }
+        }
+      ]
+    },
+    {
+      "name": "2 - Autenticacao",
+      "item": [
+        {
+          "name": "Listar pedidos sem token (erro)",
+          "event": [{
+            "listen": "test",
+            "script": { "type": "text/javascript", "exec": [
+              "pm.test('Status 403', () => pm.response.to.have.status(403));"
+            ] }
+          }],
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "url": "{{baseUrl}}/pedidos/listar"
+          }
+        },
+        {
+          "name": "Listar pedidos com token invalido (erro)",
+          "event": [{
+            "listen": "test",
+            "script": { "type": "text/javascript", "exec": [
+              "pm.test('Status 403', () => pm.response.to.have.status(403));"
+            ] }
+          }],
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "token-invalido", "type": "string" }] },
+            "method": "GET",
+            "url": "{{baseUrl}}/pedidos/listar"
+          }
+        },
+        {
+          "name": "Rota inexistente (erro)",
+          "event": [{
+            "listen": "test",
+            "script": { "type": "text/javascript", "exec": [
+              "pm.test('Status 404', () => pm.response.to.have.status(404));"
+            ] }
+          }],
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/pedidos/naoexiste"
+          }
+        }
+      ]
+    },
+    {
+      "name": "3 - Pedidos",
+      "item": [
+        {
+          "name": "Criar pedido com itens",
+          "event": [{
+            "listen": "test",
+            "script": { "type": "text/javascript", "exec": [
+              "pm.test('Status 201', () => pm.response.to.have.status(201));",
+              "const body = pm.response.json();",
+              "pm.test('Retorna id', () => pm.expect(body.id).to.be.a('number'));",
+              "pm.test('nomeCliente correto', () => pm.expect(body.nomeCliente).to.eql('Anthony'));",
+              "pm.test('Criou 2 itens', () => pm.expect(body.itens).to.have.lengthOf(2));",
+              "pm.collectionVariables.set('pedidoId', body.id);"
+            ] }
+          }],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"nomeCliente\": \"Anthony\",\n  \"itens\": [\n    { \"quantidade\": 2 },\n    { \"quantidade\": 5 }\n  ]\n}" },
+            "url": "{{baseUrl}}/pedidos/criar"
+          }
+        },
+        {
+          "name": "Criar pedido sem itens",
+          "event": [{
+            "listen": "test",
+            "script": { "type": "text/javascript", "exec": [
+              "pm.test('Status 201', () => pm.response.to.have.status(201));",
+              "const body = pm.response.json();",
+              "pm.test('Sem itens', () => pm.expect(body.itens).to.have.lengthOf(0));",
+              "pm.collectionVariables.set('pedidoSemItensId', body.id);"
+            ] }
+          }],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"nomeCliente\": \"Pedido sem itens\"\n}" },
+            "url": "{{baseUrl}}/pedidos/criar"
+          }
+        },
+        {
+          "name": "Criar pedido sem nomeCliente (erro)",
+          "event": [{
+            "listen": "test",
+            "script": { "type": "text/javascript", "exec": [
+              "pm.test('Status 400', () => pm.response.to.have.status(400));",
+              "pm.test('Retorna mensagem', () => pm.expect(pm.response.json()).to.have.property('mensagem'));"
+            ] }
+          }],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"nome\": \"Anthony\",\n  \"itens\": [\n    { \"quantidade\": 2 }\n  ]\n}" },
+            "url": "{{baseUrl}}/pedidos/criar"
+          }
+        },
+        {
+          "name": "Listar pedidos",
+          "event": [{
+            "listen": "test",
+            "script": { "type": "text/javascript", "exec": [
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "const body = pm.response.json();",
+              "pm.test('Retorna lista', () => pm.expect(body).to.be.an('array'));",
+              "const pedido = body.find(p => p.id == pm.collectionVariables.get('pedidoId'));",
+              "pm.test('Contem o pedido criado', () => pm.expect(pedido).to.not.be.undefined);",
+              "pm.test('Pedido criado tem 2 itens', () => pm.expect(pedido.itens).to.have.lengthOf(2));"
+            ] }
+          }],
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/pedidos/listar"
+          }
+        },
+        {
+          "name": "Atualizar pedido",
+          "event": [{
+            "listen": "test",
+            "script": { "type": "text/javascript", "exec": [
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "pm.test('nomeCliente atualizado', () => pm.expect(pm.response.json().nomeCliente).to.eql('Anthony Atualizado'));"
+            ] }
+          }],
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"nomeCliente\": \"Anthony Atualizado\"\n}" },
+            "url": "{{baseUrl}}/pedidos/atualizar/{{pedidoId}}"
+          }
+        },
+        {
+          "name": "Atualizar pedido inexistente (erro)",
+          "event": [{
+            "listen": "test",
+            "script": { "type": "text/javascript", "exec": [
+              "pm.test('Status 400', () => pm.response.to.have.status(400));",
+              "pm.test('Mensagem de nao encontrado', () => pm.expect(pm.response.json().mensagem).to.eql('Pedido não encontrado!'));"
+            ] }
+          }],
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"nomeCliente\": \"Nao existe\"\n}" },
+            "url": "{{baseUrl}}/pedidos/atualizar/999999"
+          }
+        }
+      ]
+    },
+    {
+      "name": "4 - Itens do pedido",
+      "item": [
+        {
+          "name": "Criar item avulso",
+          "event": [{
+            "listen": "test",
+            "script": { "type": "text/javascript", "exec": [
+              "pm.test('Status 201', () => pm.response.to.have.status(201));",
+              "const body = pm.response.json();",
+              "pm.test('Quantidade correta', () => pm.expect(body.quantidade).to.eql(3));",
+              "pm.collectionVariables.set('itemId', body.id);"
+            ] }
+          }],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"quantidade\": 3,\n  \"pedidoId\": {{pedidoId}}\n}" },
+            "url": "{{baseUrl}}/pedidosItens/criar"
+          }
+        },
+        {
+          "name": "Criar item em pedido inexistente (erro)",
+          "event": [{
+            "listen": "test",
+            "script": { "type": "text/javascript", "exec": [
+              "pm.test('Status 400', () => pm.response.to.have.status(400));",
+              "pm.test('Mensagem de pedido nao encontrado', () => pm.expect(pm.response.json().mensagem).to.eql('Pedido não encontrado!'));"
+            ] }
+          }],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"quantidade\": 3,\n  \"pedidoId\": 999999\n}" },
+            "url": "{{baseUrl}}/pedidosItens/criar"
+          }
+        },
+        {
+          "name": "Listar itens",
+          "event": [{
+            "listen": "test",
+            "script": { "type": "text/javascript", "exec": [
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "const body = pm.response.json();",
+              "pm.test('Contem o item criado', () => pm.expect(body.some(i => i.id == pm.collectionVariables.get('itemId'))).to.be.true);"
+            ] }
+          }],
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/pedidosItens/listar"
+          }
+        },
+        {
+          "name": "Atualizar item",
+          "event": [{
+            "listen": "test",
+            "script": { "type": "text/javascript", "exec": [
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "pm.test('Quantidade atualizada', () => pm.expect(pm.response.json().quantidade).to.eql(10));"
+            ] }
+          }],
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"quantidade\": 10,\n  \"pedidoId\": {{pedidoId}}\n}" },
+            "url": "{{baseUrl}}/pedidosItens/atualizar/{{itemId}}"
+          }
+        },
+        {
+          "name": "Atualizar item inexistente (erro)",
+          "event": [{
+            "listen": "test",
+            "script": { "type": "text/javascript", "exec": [
+              "pm.test('Status 400', () => pm.response.to.have.status(400));",
+              "pm.test('Mensagem de item nao encontrado', () => pm.expect(pm.response.json().mensagem).to.eql('Item não encontrado!'));"
+            ] }
+          }],
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"quantidade\": 10,\n  \"pedidoId\": {{pedidoId}}\n}" },
+            "url": "{{baseUrl}}/pedidosItens/atualizar/999999"
+          }
+        },
+        {
+          "name": "Deletar item",
+          "event": [{
+            "listen": "test",
+            "script": { "type": "text/javascript", "exec": [
+              "pm.test('Status 200', () => pm.response.to.have.status(200));"
+            ] }
+          }],
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/pedidosItens/deletar/{{itemId}}"
+          }
+        },
+        {
+          "name": "Deletar item inexistente (erro)",
+          "event": [{
+            "listen": "test",
+            "script": { "type": "text/javascript", "exec": [
+              "pm.test('Status 400', () => pm.response.to.have.status(400));",
+              "pm.test('Mensagem de item nao encontrado', () => pm.expect(pm.response.json().mensagem).to.eql('Item não encontrado!'));"
+            ] }
+          }],
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/pedidosItens/deletar/{{itemId}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "5 - Deletar pedidos",
+      "item": [
+        {
+          "name": "Deletar pedido sem itens",
+          "event": [{
+            "listen": "test",
+            "script": { "type": "text/javascript", "exec": [
+              "pm.test('Status 200', () => pm.response.to.have.status(200));"
+            ] }
+          }],
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/pedidos/deletar/{{pedidoSemItensId}}"
+          }
+        },
+        {
+          "name": "Deletar pedido com itens (erro hoje: chave estrangeira)",
+          "event": [{
+            "listen": "test",
+            "script": { "type": "text/javascript", "exec": [
+              "// Hoje o banco nao deixa apagar um pedido que ainda tem itens.",
+              "// Se adicionar cascade = CascadeType.REMOVE em Pedidos.itens, troque para status 200.",
+              "pm.test('Status 400', () => pm.response.to.have.status(400));"
+            ] }
+          }],
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/pedidos/deletar/{{pedidoId}}"
+          }
+        },
+        {
+          "name": "Deletar pedido inexistente (erro)",
+          "event": [{
+            "listen": "test",
+            "script": { "type": "text/javascript", "exec": [
+              "pm.test('Status 400', () => pm.response.to.have.status(400));",
+              "pm.test('Mensagem de nao encontrado', () => pm.expect(pm.response.json().mensagem).to.eql('Pedido não encontrado!'));"
+            ] }
+          }],
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/pedidos/deletar/999999"
+          }
+        }
+      ]
+    }
+  ]
+}

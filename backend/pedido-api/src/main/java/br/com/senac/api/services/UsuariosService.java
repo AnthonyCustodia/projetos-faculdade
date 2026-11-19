@@ -24,6 +24,10 @@ public class UsuariosService {
     private JwtService jwtService;
 
     public Usuarios criar(UsuariosRequestDto usuario) {
+        if(usuariosRepositorio.existsByEmail(usuario.getEmail())) {
+            throw new RuntimeException("Email já cadastrado!");
+        }
+
         Usuarios usuarioPersit =
                 this.usuariosRequestDtoParaUsuarios(usuario);
 
