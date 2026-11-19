@@ -3,6 +3,9 @@ package br.com.senac.api.entidades;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
+/**
+ * Entidade JPA da tabela "pedidos_itens". Cada item pertence a um único pedido (relação N:1).
+ */
 @Entity
 public class PedidosItens {
 
@@ -13,6 +16,8 @@ public class PedidosItens {
     @Column(nullable = false)
     private Double quantidade;
 
+    // Lado "dono" da relação: cria a coluna pedido_id (chave estrangeira para pedidos.id).
+    // @JsonBackReference: este campo NÃO aparece no JSON (evita o loop com Pedidos.itens).
     @ManyToOne
     @JoinColumn(name = "pedido_id", nullable = false)
     @JsonBackReference

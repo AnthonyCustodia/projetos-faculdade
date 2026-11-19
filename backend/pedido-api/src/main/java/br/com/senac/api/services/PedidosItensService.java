@@ -1,15 +1,17 @@
 package br.com.senac.api.services;
 
 import br.com.senac.api.dtos.PedidosItensRequestDto;
-import br.com.senac.api.entidades.Pedidos;
 import br.com.senac.api.entidades.PedidosItens;
-import br.com.senac.api.repositorios.PedidosItensRepositorio;
+import br.com.senac.api.respositorios.PedidosItensRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * CRUD de itens de pedido. Todo item precisa estar ligado a um pedido existente (pedidoId).
+ */
 @Service
 public class PedidosItensService {
     @Autowired
@@ -23,21 +25,16 @@ public class PedidosItensService {
     }
 
     public PedidosItens criar(PedidosItensRequestDto item) {
-        Pedidos pedido = pedidosService.listarPorId(item.getPedidoId());
-
         PedidosItens itemSaida = this.pedidosItensRequestDtoToPedidosItens(item);
-        itemSaida.setPedido(pedido);
 
         return pedidosItensRepositorio.save(itemSaida);
     }
 
     public PedidosItens atualizar(Long id, PedidosItensRequestDto item) {
         if(pedidosItensRepositorio.existsById(id)) {
-            Pedidos pedido = pedidosService.listarPorId(item.getPedidoId());
-
             PedidosItens itemSaida = this.pedidosItensRequestDtoToPedidosItens(item);
+            // Com o id preenchido, save() faz UPDATE em vez de INSERT.
             itemSaida.setId(id);
-            itemSaida.setPedido(pedido);
 
             return pedidosItensRepositorio.save(itemSaida);
         }
@@ -64,10 +61,13 @@ public class PedidosItensService {
 
     }
 
+    // Converte o DTO na entidade. Busca o pedido pelo pedidoId: se ele não existir,
+    // listarPorId() lança "Pedido não encontrado!" e o item não é salvo.
     private PedidosItens pedidosItensRequestDtoToPedidosItens(PedidosItensRequestDto entrada) {
         PedidosItens saida = new PedidosItens();
 
         saida.setQuantidade(entrada.getQuantidade());
+        saida.setPedido(pedidosService.listarPorId(entrada.getPedidoId()));
 
         return saida;
     }

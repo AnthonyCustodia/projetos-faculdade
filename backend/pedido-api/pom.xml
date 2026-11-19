@@ -54,15 +54,22 @@
 			<artifactId>spring-boot-starter-webmvc-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
+		<!-- Spring Security: ao ser adicionado, protege TODAS as rotas por padrao.
+		     As regras desta API ficam em config/SecurityConfig.java. Traz tambem o BCryptPasswordEncoder. -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
+		<!-- java-jwt (Auth0): biblioteca usada para criar, assinar e validar os tokens JWT.
+		     Usada em jwt/JwtService.java (JWT.create(), JWT.require(), Algorithm.HMAC256). -->
 		<dependency>
 			<groupId>com.auth0</groupId>
 			<artifactId>java-jwt</artifactId>
 			<version>4.4.0</version>
 		</dependency>
+
+
 	</dependencies>
 
 	<build>

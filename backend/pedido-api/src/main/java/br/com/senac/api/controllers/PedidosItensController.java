@@ -1,7 +1,6 @@
 package br.com.senac.api.controllers;
 
 import br.com.senac.api.dtos.PedidosItensRequestDto;
-import br.com.senac.api.entidades.PedidosItens;
 import br.com.senac.api.services.PedidosItensService;
 import br.com.senac.api.utils.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +10,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * Endpoints de itens de pedido. Também são rotas PROTEGIDAS: exigem o header
+ * "Authorization: Bearer <token>" obtido em POST /usuario/login.
+ */
 @Controller
 @RequestMapping("/pedidosItens")
 public class PedidosItensController {
@@ -19,7 +22,7 @@ public class PedidosItensController {
     private PedidosItensService pedidosItensService;
 
     @GetMapping("/listar")
-    public ResponseEntity<List<PedidosItens>> listarTodos() {
+    public ResponseEntity<List<?>> listarTodos() {
         return ResponseEntity.ok(pedidosItensService.listar());
     }
 

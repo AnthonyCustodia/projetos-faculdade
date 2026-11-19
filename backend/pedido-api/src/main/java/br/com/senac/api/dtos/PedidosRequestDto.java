@@ -1,11 +1,11 @@
 package br.com.senac.api.dtos;
 
-import java.util.List;
-
+/**
+ * Dados recebidos no corpo (JSON) para criar/atualizar um pedido: { "nomeCliente": "..." }
+ * Os itens são cadastrados à parte, em POST /pedidosItens/criar (informando o pedidoId).
+ */
 public class PedidosRequestDto {
     private String nomeCliente;
-
-    private List<PedidoItemRequestDto> itens;
 
     public String getNomeCliente() {
         return nomeCliente;
@@ -13,13 +13,5 @@ public class PedidosRequestDto {
 
     public void setNomeCliente(String nomeCliente) {
         this.nomeCliente = nomeCliente;
-    }
-
-    public List<PedidoItemRequestDto> getItens() {
-        return itens;
-    }
-
-    public void setItens(List<PedidoItemRequestDto> itens) {
-        this.itens = itens;
     }
 }
