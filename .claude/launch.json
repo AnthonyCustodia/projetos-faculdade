@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "fetch-api",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev", "--prefix", "frontend/fetch-api", "--", "--port", "5173", "--strictPort"],
+      "port": 5173
+    }
+  ]
+}
