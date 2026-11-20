@@ -1,0 +1,24 @@
+server:
+  error:
+    include-message: always
+    include-stacktrace: never
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  # Cada integrante pode usar o proprio usuario/senha do PostgreSQL definindo
+  # as variaveis de ambiente DB_URL, DB_USERNAME e DB_PASSWORD. Sem elas, vale o padrao abaixo.
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/estoque-db}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:Sen@c2023}
+    driverClassName: org.postgresql.Driver
+
+# Configuracoes proprias da aplicacao
+estoque:
+  jwt:
+    segredo: 9pQx2LmZr7VbT4kWs1NyE6uHcJ3dFa8GtRqKoP5vXwY
+    expiracao-horas: 8
+  cors:
+    origens-permitidas: http://localhost:5173
